@@ -30,6 +30,13 @@ public class ProdutoService implements IProdutoService {
         return produtos;
     }
     
+    public List<Produto> listarProdutosCategoria(int idCategoria) throws Exception {
+    	List<Produto> produtos = new ArrayList<>();
+    	Iterable<Produto> results = produtoRepository.findByCategoria(idCategoria);
+    	results.forEach(p -> produtos.add(p));
+        return produtos;
+    }
+    
     public Optional<Produto> detalharProduto(int id) throws Exception {
         return produtoRepository.findById(id);
     }

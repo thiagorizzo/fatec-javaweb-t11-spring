@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,6 +58,13 @@ public class ProdutoController {
     	List<Produto> produtos = produtoService.listarProdutos();
         return new ResponseEntity<>(produtos.toArray(new Produto[produtos.size()]), HttpStatus.OK);
     }
+    
+    //@RequestMapping(value="/categoria/{categoria}", method=RequestMethod.GET)
+    @GetMapping(path = "/categoria/{categoria}")
+    public ResponseEntity<Produto[]> listProdutosCategoria(@PathVariable("categoria") int idCategoria) throws Exception {
+    	List<Produto> produtos = produtoService.listarProdutosCategoria(idCategoria);
+        return new ResponseEntity<>(produtos.toArray(new Produto[produtos.size()]), HttpStatus.OK);
+    }    
     
     @GetMapping(path = "/detalhe")
     public ResponseEntity<Produto> detailProdutos(@RequestParam(name="id") int id) throws Exception {

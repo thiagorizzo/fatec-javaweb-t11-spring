@@ -14,4 +14,5 @@ public interface IProdutoService {
     List<Produto> listarProdutos() throws Exception;
     Optional<Produto> detalharProduto(int id) throws Exception;
     Produto cadastrarProduto(Produto produto) throws Exception;
+    List<Produto >listarProdutosCategoria(int idCategoria) throws Exception;
 }
