@@ -21,7 +21,7 @@ public class CategoriaController {
 	@Autowired
 	private ICategoriaService categoriaService;
 	
-    //@CrossOrigin(origins = "http://localhost:9002")	
+    @CrossOrigin(origins = "")	
 	@GetMapping
 	public ResponseEntity listCategoria() {
 		try {

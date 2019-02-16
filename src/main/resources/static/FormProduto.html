@@ -12,24 +12,16 @@
 				var categorias = undefined;
 				
 	            var buscarCategorias = () => {
-	            	debugger;
 	                $.get("http://localhost:8080/categoria",
-	                    function(data) {
-	                		debugger;
-	                        categorias = data;
+	                    function(categorias) {
+		    				var selectCategorias = $("#categorias");
+		    				categorias.forEach((c) =>{
+		    					selectCategorias.append(`<option value='${c.id}'>${c.nome}</option>`);	
+		    				});
 	                    });
 	            }				
 				
-	            debugger;
 	            buscarCategorias();
-				
-				var selectCategorias = $("#categorias");
-				debugger;
-				categorias.forEach((c) =>{
-					selectCategorias.append(`<option value='{c.id}'>{c.nome}</option>`);	
-				});
-				
-				
 			});
 		</script>
     </head>
@@ -45,9 +37,6 @@
              </div>
              <div class="form-group">
              	<select name="categoria" id="categorias">
-             		<option value="1">Jogos</option>
-             		<option value="2">Material Escolar</option>
-					<option value="3">Error</option>
              	</select>
              </div>
             <input type="submit" value="Cadastrar"/>
