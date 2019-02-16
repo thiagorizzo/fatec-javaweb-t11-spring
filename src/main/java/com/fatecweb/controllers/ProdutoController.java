@@ -6,15 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.fatecweb.controllers.interfaces.ICategoriaService;
 import com.fatecweb.controllers.interfaces.IProdutoService;
@@ -41,16 +40,22 @@ public class ProdutoController {
 	}
 	
     @PostMapping()
-    public ResponseEntity<Produto> createProduto(@RequestParam(name="nome") String nome, @RequestParam(name="preco") float preco, @RequestParam(name="categoria") int idCategoria) throws Exception {
-    	Optional<Categoria> optionalCategoria = categoriaService.buscarPeloId(idCategoria);
-    	if (optionalCategoria.isPresent())
-    	{
-    		Categoria categoria = optionalCategoria.get();
-    		Produto produtoCriado = produtoService.cadastrarProduto(new Produto(nome, preco, categoria));
-    		return new ResponseEntity<>(produtoCriado, HttpStatus.CREATED);
+    public ResponseEntity createProduto(@RequestParam(name="nome") String nome, @RequestParam(name="preco") float preco, @RequestParam(name="categoria") int idCategoria) {
+    	try {
+	    	Optional<Categoria> optionalCategoria = categoriaService.buscarPeloId(idCategoria);
+	    	if (optionalCategoria.isPresent()) {
+	    		Categoria categoria = optionalCategoria.get();
+	    		Produto produtoCriado = produtoService.cadastrarProduto(new Produto(nome, preco, categoria));
+	    		return new ResponseEntity<Produto>(produtoCriado, HttpStatus.CREATED);
+	    	} else
+	    		return ResponseEntity
+	    				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	    	            .body("Categoria não encontrada.");
+    	} catch(Exception ex) {
+    		return ResponseEntity
+    				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    	            .body(ex.getMessage());
     	}
-    	else
-    		return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }    
     
     /*@PostMapping()
@@ -59,10 +64,17 @@ public class ProdutoController {
     	return new ResponseEntity<>(produtoCriado, HttpStatus.CREATED);
     }*/
     
+    @CrossOrigin(origins = "http://localhost:9002")    
     @GetMapping()
-    public ResponseEntity<Produto[]> listProdutos() throws Exception {
-    	List<Produto> produtos = produtoService.listarProdutos();
-        return new ResponseEntity<>(produtos.toArray(new Produto[produtos.size()]), HttpStatus.OK);
+    public ResponseEntity listProdutos() throws Exception {
+    	try {
+	    	List<Produto> produtos = produtoService.listarProdutos();
+	        return new ResponseEntity<>(produtos.toArray(new Produto[produtos.size()]), HttpStatus.OK);
+    	} catch(Exception ex) {
+    		return ResponseEntity
+    				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    	            .body(ex.getMessage());
+    	}	        
     }
     
     // http://localhost:8080/produto/categoria/1
@@ -77,14 +89,22 @@ public class ProdutoController {
     // http://localhost:8080/produto/detalhe?id=3
     
     @GetMapping(path = "/detalhe")
-    public ResponseEntity<Produto> detailProdutos(@RequestParam(name="id") int id) throws Exception {
-    	Optional<Produto> optionalProduto = produtoService.detalharProduto(id);
-    	if (optionalProduto.isPresent())
-    	{
-    		Produto produto = optionalProduto.get();
-            return new ResponseEntity<>(produto, HttpStatus.OK);
+    public ResponseEntity detailProdutos(@RequestParam(name="id") int id) throws Exception {
+    	try {
+	    	Optional<Produto> optionalProduto = produtoService.detalharProduto(id);
+	    	if (optionalProduto.isPresent())
+	    	{
+	    		Produto produto = optionalProduto.get();
+	            return new ResponseEntity<>(produto, HttpStatus.OK);
+	    	}
+			else
+	    		return ResponseEntity
+	    				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	    	            .body("produto não encontrado.");
+    	} catch(Exception ex) {
+    		return ResponseEntity
+    				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    	            .body(ex.getMessage());
     	}
-		else
-			return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }        
 }
