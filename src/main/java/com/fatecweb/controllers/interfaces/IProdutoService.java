@@ -6,14 +6,12 @@
 package com.fatecweb.controllers.interfaces;
 
 import java.util.List;
+import java.util.Optional;
+
 import com.fatecweb.models.Produto;
 
-/**
- *
- * @author MAQLAB
- */
 public interface IProdutoService {
     List<Produto> listarProdutos() throws Exception;
-    Produto detalharProduto(int id) throws Exception;
+    Optional<Produto> detalharProduto(int id) throws Exception;
     Produto cadastrarProduto(Produto produto) throws Exception;
 }

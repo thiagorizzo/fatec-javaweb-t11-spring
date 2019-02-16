@@ -5,6 +5,7 @@
  */
 package com.fatecweb.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fatecweb.controllers.interfaces.IUsuarioService;
@@ -14,13 +15,12 @@ import com.fatecweb.repository.UsuarioRepository;
 @Service
 public class UsuarioService implements IUsuarioService {
     
+	@Autowired
     UsuarioRepository usuarioRepository;
 
-    public UsuarioService() throws Exception {
-        this.usuarioRepository = new UsuarioRepository();
-    }
-    
+
     public Usuario verificar(String nome, String senha) throws Exception {
-        return usuarioRepository.check(nome, senha);
+        //return usuarioRepository.findAll().(nome, senha);
+    	return null;
     }
 }

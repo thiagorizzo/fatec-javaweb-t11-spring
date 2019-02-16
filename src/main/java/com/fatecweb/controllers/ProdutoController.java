@@ -1,6 +1,7 @@
 package com.fatecweb.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fatecweb.controllers.interfaces.ICategoriaService;
 import com.fatecweb.controllers.interfaces.IProdutoService;
@@ -32,9 +34,15 @@ public class ProdutoController {
 	
     @PostMapping()
     public ResponseEntity<Produto> createProduto(@RequestParam(name="nome") String nome, @RequestParam(name="preco") float preco, @RequestParam(name="categoria") int idCategoria) throws Exception {
-    	Categoria categoria = categoriaService.buscarPeloId(idCategoria);
-    	Produto produtoCriado = produtoService.cadastrarProduto(new Produto(nome, preco, categoria));
-    	return new ResponseEntity<>(produtoCriado, HttpStatus.CREATED);
+    	Optional<Categoria> optionalCategoria = categoriaService.buscarPeloId(idCategoria);
+    	if (optionalCategoria.isPresent())
+    	{
+    		Categoria categoria = optionalCategoria.get();
+    		Produto produtoCriado = produtoService.cadastrarProduto(new Produto(nome, preco, categoria));
+    		return new ResponseEntity<>(produtoCriado, HttpStatus.CREATED);
+    	}
+    	else
+    		return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }    
     
     /*@PostMapping()
@@ -51,7 +59,13 @@ public class ProdutoController {
     
     @GetMapping(path = "/detalhe")
     public ResponseEntity<Produto> detailProdutos(@RequestParam(name="id") int id) throws Exception {
-    	Produto produto = produtoService.detalharProduto(id);
-        return new ResponseEntity<>(produto, HttpStatus.OK);
+    	Optional<Produto> optionalProduto = produtoService.detalharProduto(id);
+    	if (optionalProduto.isPresent())
+    	{
+    		Produto produto = optionalProduto.get();
+            return new ResponseEntity<>(produto, HttpStatus.OK);
+    	}
+		else
+			return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }        
 }

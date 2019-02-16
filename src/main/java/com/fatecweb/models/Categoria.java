@@ -5,14 +5,23 @@
  */
 package com.fatecweb.models;
 
-/**
- *
- * @author MAQ01LAB04
- */
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Categoria {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)	
     private int id;
+    
     private String nome;
 
+    public Categoria() {
+
+    }
+    
     public Categoria(int id, String nome) {
         this.id = id;
         this.nome = nome;

@@ -5,7 +5,8 @@
  */
 package com.fatecweb.controllers.interfaces;
 
-import java.util.List;
+import java.util.Optional;
+
 import com.fatecweb.models.Categoria;
 
 /**
@@ -13,6 +14,6 @@ import com.fatecweb.models.Categoria;
  * @author MAQ01LAB04
  */
 public interface ICategoriaService {
-    Categoria buscarPeloId(int idCategoria) throws Exception;
-    List<Categoria> listar() throws Exception;
+	Optional<Categoria> buscarPeloId(int idCategoria) throws Exception;
+    Iterable<Categoria> listar() throws Exception;
 }

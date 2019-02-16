@@ -5,14 +5,26 @@
  */
 package com.fatecweb.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)    
+    private int id;	
+	
     private String nome;
 
-    private int id;
-    
     private String senha;
 
+    public Usuario() {
+    	
+    }
+    
     public Usuario(String nome, int id) {
         this.nome = nome;
         this.id = id;

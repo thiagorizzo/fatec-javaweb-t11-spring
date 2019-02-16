@@ -5,16 +5,41 @@
  */
 package com.fatecweb.models;
 
-/**
- *
- * @author MAQLAB
- */
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Entity
 public class Produto {
+	
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)	
     private int id;
+    
+    @NotNull
+    @Size(max = 50)
+    @Column(name = "nome")    
     private String nome;
+    
     private float preco;
+    
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoriaid", nullable = false)
     private Categoria categoria;
 
+    public Produto() {
+    	
+    }
+    
     public Produto(int id, String nome, float preco, Categoria categoria) {
         this.id = id;
         this.nome = nome;

@@ -6,8 +6,12 @@
 package com.fatecweb.services;
 
 import com.fatecweb.controllers.interfaces.IProdutoService;
-import java.util.List;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fatecweb.models.Produto;
@@ -15,23 +19,23 @@ import com.fatecweb.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService implements IProdutoService {
-    // Service dependendo do ProdutoRepository
+
+	@Autowired
     ProdutoRepository produtoRepository;
     
-    public ProdutoService() throws Exception {
-        produtoRepository = new ProdutoRepository();        
-    }
-    
     public List<Produto> listarProdutos() throws Exception {
-        return produtoRepository.getAll();
+    	List<Produto> produtos = new ArrayList<>();
+    	Iterable<Produto> results = produtoRepository.findAll();
+    	results.forEach(p -> produtos.add(p));
+        return produtos;
     }
     
-    public Produto detalharProduto(int id) throws Exception {
-        return produtoRepository.getById(id);
+    public Optional<Produto> detalharProduto(int id) throws Exception {
+        return produtoRepository.findById(id);
     }
 
     @Override
     public Produto cadastrarProduto(Produto produto) throws Exception {
-        return produtoRepository.insert(produto);
+        return produtoRepository.save(produto);
     }
 }
