@@ -27,6 +27,13 @@ public class ProdutoService implements IProdutoService {
     	List<Produto> produtos = new ArrayList<>();
     	Iterable<Produto> results = produtoRepository.findAll();
     	results.forEach(p -> produtos.add(p));
+    	
+    	/*
+    	 * for(Produto p : results) {
+    	 * 	produtos.add(p)
+    	 * } 
+    	 */
+    		
         return produtos;
     }
     

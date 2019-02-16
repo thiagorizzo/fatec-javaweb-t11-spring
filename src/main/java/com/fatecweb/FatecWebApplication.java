@@ -15,14 +15,5 @@ public class FatecWebApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FatecWebApplication.class, args);
 	}
-	
-	@Bean
-	public ViewResolver internalResourceViewResolver() {
-	    InternalResourceViewResolver bean = new InternalResourceViewResolver();
-	    bean.setViewClass(JstlView.class);
-	    bean.setPrefix("/WEB-INF/view/");
-	    bean.setSuffix(".jsp");
-	    return bean;
-	}	
 }
 

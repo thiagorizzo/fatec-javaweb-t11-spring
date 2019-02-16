@@ -25,14 +25,20 @@ import com.fatecweb.models.Produto;
 @RequestMapping("/produto")
 public class ProdutoController {
 
-	private final IProdutoService produtoService;
-	private final ICategoriaService categoriaService;
+	private IProdutoService produtoService;
+	private ICategoriaService categoriaService;
 	
     @Autowired
     public ProdutoController(IProdutoService produtoService, ICategoriaService categoriaService) {
     	this.produtoService = produtoService;
     	this.categoriaService = categoriaService;
-	}	
+	}
+
+    // "{ 'id': 1, 'preco': 3.5, 'categoria': { "
+    @PostMapping(path = "/create")
+    public ResponseEntity<Produto> createProdutoBody(@RequestBody Produto produto) throws Exception {
+		return null;
+	}
 	
     @PostMapping()
     public ResponseEntity<Produto> createProduto(@RequestParam(name="nome") String nome, @RequestParam(name="preco") float preco, @RequestParam(name="categoria") int idCategoria) throws Exception {
@@ -59,12 +65,16 @@ public class ProdutoController {
         return new ResponseEntity<>(produtos.toArray(new Produto[produtos.size()]), HttpStatus.OK);
     }
     
+    // http://localhost:8080/produto/categoria/1
+    
     //@RequestMapping(value="/categoria/{categoria}", method=RequestMethod.GET)
     @GetMapping(path = "/categoria/{categoria}")
     public ResponseEntity<Produto[]> listProdutosCategoria(@PathVariable("categoria") int idCategoria) throws Exception {
     	List<Produto> produtos = produtoService.listarProdutosCategoria(idCategoria);
         return new ResponseEntity<>(produtos.toArray(new Produto[produtos.size()]), HttpStatus.OK);
     }    
+    
+    // http://localhost:8080/produto/detalhe?id=3
     
     @GetMapping(path = "/detalhe")
     public ResponseEntity<Produto> detailProdutos(@RequestParam(name="id") int id) throws Exception {
